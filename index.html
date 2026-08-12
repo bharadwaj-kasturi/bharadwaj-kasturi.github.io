@@ -335,6 +335,43 @@ footer{
   border-top:1px solid var(--line-soft);
 }
 
+/* ─── field notes (accordion) ────────────────────────────── */
+.notes{display:flex;flex-direction:column;border-top:1px solid var(--line-soft)}
+.note{border-bottom:1px solid var(--line-soft)}
+.note>summary{
+  list-style:none;cursor:pointer;
+  display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:.6rem 1rem;
+  padding:1.15rem .25rem;
+  transition:padding-left .2s;
+}
+.note>summary::-webkit-details-marker{display:none}
+.note>summary:hover{padding-left:.6rem}
+.note__tag{
+  font:500 .7rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-dim);white-space:nowrap;
+}
+.note__name{font-size:1.08rem;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.note>summary:hover .note__name{color:var(--accent)}
+.note__plus{
+  position:relative;width:13px;height:13px;flex:none;align-self:center;color:var(--faint);
+  transition:transform .25s,color .2s;
+}
+.note>summary:hover .note__plus{color:var(--accent)}
+.note__plus::before,.note__plus::after{content:"";position:absolute;background:currentColor}
+.note__plus::before{left:0;top:6px;width:13px;height:1.5px}
+.note__plus::after{left:6px;top:0;width:1.5px;height:13px}
+.note[open] .note__plus{transform:rotate(45deg)}
+.note__body{padding:0 0 1.5rem;max-width:64ch;display:grid;gap:1rem}
+.note__row{display:grid;grid-template-columns:minmax(0,7.5rem) 1fr;gap:.4rem 1.1rem}
+@media (max-width:560px){.note__row{grid-template-columns:1fr;gap:.2rem}}
+.note__k{font:500 .7rem/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding-top:.15rem}
+.note__v{color:var(--dim);font-size:.96rem;line-height:1.65}
+.note__v code{
+  font:.86em/1 var(--mono);background:var(--surface-2);color:var(--text);
+  padding:.15em .4em;border-radius:3px;border:1px solid var(--line);
+}
+.note[open]>summary .note__name{color:var(--accent)}
+
 /* ─── reveal ─────────────────────────────────────────────── */
 .rv{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
 .rv.in{opacity:1;transform:none}
@@ -366,6 +403,7 @@ footer{
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#engagements">Engagements</a>
+      <a href="#fieldnotes">Field notes</a>
       <a href="#capabilities">Capabilities</a>
       <a href="#credentials">Credentials</a>
       <a href="#contact">Contact</a>
@@ -560,6 +598,127 @@ footer{
         </div>
 
         <p class="prose rv" style="margin-top:2rem;font-size:.95rem;color:var(--faint)">Severities were CVSS-scored per engagement. Ratings, affected assets, and proof-of-concept material stay with the client.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="fieldnotes">
+    <div class="wrap sec__grid">
+      <div class="sec__label rv"><h2>Field notes</h2><p>How each bug<br>works &amp; where<br>to look for it</p></div>
+      <div>
+        <p class="prose rv" style="margin-bottom:2rem">Short, vendor-neutral notes on the vulnerability classes above — what the flaw is, how it shows up in an application, and how it surfaces during testing. General methodology only; no target, no client, no live exploit.</p>
+        <div class="notes rv">
+
+          <details class="note">
+            <summary><span class="note__tag">Access</span><span class="note__name">Broken Access Control &amp; IDOR</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">The server trusts the client to decide what a user may see or do. A request references an object by identifier, and the app returns it without checking the caller actually owns it (IDOR), or exposes an action a lower-privileged role should never reach.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">A profile page loads <code>?id=1052</code>; changing it to <code>1051</code> returns someone else's record. Or an admin-only endpoint answers a normal user's request.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Map every object reference and every privileged action, then replay each request as a different or lower-privileged account — swapping IDs, roles, and tenant scope — and watch for data or actions that should have been denied.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Injection</span><span class="note__name">Server-Side Request Forgery (SSRF)</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">The server fetches a URL the user controls, so the user can make it request internal systems it can reach but the user cannot — cloud metadata endpoints, admin panels, or the loopback interface. Chained with a file scheme, it can read local files.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Features that take a URL: webhook setup, "import from link", PDF/thumbnail generators, avatar-by-URL. The server, not the browser, makes the outbound call.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Point every server-fetched URL at a collaborator host and confirm the callback originates from the server. Then probe internal targets and alternate schemes to gauge reach.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Injection</span><span class="note__name">Stored &amp; Blind Cross-Site Scripting</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">User input is saved and later rendered into a page without being encoded, so injected script runs in another user's browser. "Blind" means it fires somewhere you can't see — an admin dashboard, a support console, a log viewer.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Any field that is stored and shown elsewhere: names, comments, file names, support tickets, user-agent logging.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Plant a uniquely-tagged payload that calls back to a collaborator across every stored field, then wait — a callback reveals where it rendered, including back-office pages you never visit directly.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Injection</span><span class="note__name">XSS via Prototype Pollution</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">JavaScript that merges user input into objects without guarding <code>__proto__</code> can alter the base prototype every object inherits from. A polluted property then flows into a sink — an HTML template, a config default — and becomes script execution.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Client-side apps with deep-merge, query-string parsers, or config libraries that copy untrusted keys into objects.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Set a marker via crafted <code>__proto__</code> keys in query or JSON input, confirm it lands on a fresh object, then trace whether any gadget in the app turns that property into a rendered sink.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Logic</span><span class="note__name">Race Conditions</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">A check and the action it guards are not atomic. Fire many requests in the same instant and several slip through before the state updates — a one-time coupon redeemed repeatedly, a balance spent twice.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Anything with a "once" or "limit" rule: promo codes, withdrawals, invite acceptance, vote or rating caps.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Send the same state-changing request in a tight parallel burst (single-packet timing) and check whether the limit held or the operation applied more times than allowed.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Upload</span><span class="note__name">Unrestricted File Upload &amp; Arbitrary File Write</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">An upload trusts the client's stated type or name, letting a non-image land in a served directory, or a crafted path (<code>../</code>) write outside the intended folder — potentially overwriting existing files.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Profile pictures, document imports, bulk uploads — anywhere the file's name or content-type is taken at face value.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Vary extension, content-type, magic bytes, and traversal sequences in the filename; then confirm where the file lands and whether the server serves or executes it.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Exposure</span><span class="note__name">Hardcoded Secrets in Client-Side Code</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">Keys, tokens, or credentials shipped inside JavaScript or a mobile bundle. Anything the client holds is readable — "hidden" in minified code is not hidden.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">API keys in bundles, secrets in source maps, admin tokens in comments, third-party credentials embedded for convenience.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Pull every script and mobile artifact, unminify, and pattern-scan for key formats and entropy; then verify each candidate is live and check what it authorizes.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Logic</span><span class="note__name">Business Logic &amp; Insecure Design</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">Every request is individually valid, but the intended workflow can be bent — steps skipped, reordered, or repeated — to reach a state the designer never allowed. No payload; the logic itself is the flaw.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Multi-step flows: checkout, refunds, tiered pricing, approval chains, quota and entitlement enforcement.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Model the intended flow, then deliberately break its assumptions — negative quantities, skipped verification, replayed confirmations, tampered client-trusted totals — and see what the server still accepts.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">AI</span><span class="note__name">Prompt Injection in AI-Assisted Features</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">An LLM feature mixes trusted instructions with untrusted content in the same context. Attacker-controlled text instructs the model to ignore its rules, leak its context, or misuse a connected tool — including data reached through the model's own permissions.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Chat assistants, summarizers, and agents that read user documents, tickets, or web pages and can call tools or query data on the user's behalf.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Feed instructions through every channel the model ingests — direct prompts and indirect content it reads — and test whether it overrides guardrails, discloses system context, or performs actions beyond the user's own entitlements.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Config</span><span class="note__name">CORS Misconfiguration</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">The server reflects or over-trusts the request <code>Origin</code> and returns <code>Access-Control-Allow-Credentials: true</code>, letting a malicious site read authenticated responses on a victim's behalf.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">APIs that echo the Origin header back into <code>Access-Control-Allow-Origin</code>, or trust <code>null</code> and arbitrary subdomains.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Send requests with unexpected Origin values and inspect the CORS response headers; a reflected origin paired with credentialed access confirms cross-origin data reads are possible.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Control</span><span class="note__name">Missing Rate Limiting</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">No throttle on sensitive actions, so requests can be repeated at will — enabling credential brute force, OTP guessing, coupon abuse, or enumeration.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Login, forgot-password, OTP verification, and search or lookup endpoints that answer unlimited attempts.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Automate a controlled volume of requests against the action and confirm none are throttled, challenged, or locked — while watching for rate limits keyed weakly enough to bypass by rotating a header.</span></div>
+            </div>
+          </details>
+
+          <details class="note">
+            <summary><span class="note__tag">Session</span><span class="note__name">Improper Session Invalidation</span><span class="note__plus" aria-hidden="true"></span></summary>
+            <div class="note__body">
+              <div class="note__row"><span class="note__k">The bug</span><span class="note__v">A session token stays valid after it should have died — after logout, password change, or account deactivation — so a captured token keeps working.</span></div>
+              <div class="note__row"><span class="note__k">How it shows</span><span class="note__v">Logout that only clears the client; password resets that don't revoke other sessions; disabled accounts whose old tokens still authenticate.</span></div>
+              <div class="note__row"><span class="note__k">How to find</span><span class="note__v">Capture a valid token, trigger the event that should end it, then replay the token and confirm whether the server still honors it.</span></div>
+            </div>
+          </details>
+
+        </div>
+        <p class="prose rv" style="margin-top:1.75rem;font-size:.9rem;color:var(--faint)">Educational summaries for defenders and learners. They describe classes of flaw in the abstract and intentionally omit any working exploit, payload, or affected system.</p>
       </div>
     </div>
   </section>
