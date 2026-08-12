@@ -139,7 +139,13 @@ a{color:inherit}
   -webkit-mask-image:radial-gradient(120% 80% at 78% 8%,#000 0%,transparent 68%);
   opacity:.7;
 }
-.hero>*{position:relative}
+.hero>*{position:relative;z-index:1}
+.hero__glow{
+  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;
+  transition:opacity .45s ease;
+  background:radial-gradient(360px circle at var(--hx,72%) var(--hy,18%),var(--accent-wash),transparent 68%);
+}
+.hero:hover .hero__glow{opacity:1}
 
 .tag{
   display:inline-flex;align-items:center;gap:.55rem;
@@ -269,11 +275,18 @@ a{color:inherit}
 /* ─── cards ──────────────────────────────────────────────── */
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
 .card{
+  position:relative;overflow:hidden;--mx:50%;--my:50%;
   border:1px solid var(--line);background:var(--surface);
   padding:1.35rem;border-radius:4px;
   display:flex;flex-direction:column;gap:.6rem;
   transition:border-color .2s,transform .2s,background .2s;
 }
+.card::after,.win::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(220px circle at var(--mx) var(--my),rgba(240,162,39,.10),transparent 60%);
+}
+.card:hover::after,.win:hover::after{opacity:1}
+.card>*{position:relative}
 .card:hover{border-color:var(--accent-dim);background:var(--surface-2);transform:translateY(-3px)}
 .card__code{
   font:500 1.05rem/1 var(--mono);letter-spacing:.02em;color:var(--accent);
@@ -287,9 +300,11 @@ a{color:inherit}
 /* ─── highlights ─────────────────────────────────────────── */
 .wins{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
 .win{
+  position:relative;overflow:hidden;--mx:50%;--my:50%;
   border:1px solid var(--line);border-left:2px solid var(--accent);
   background:var(--surface);padding:1.35rem 1.5rem;border-radius:0 4px 4px 0;
 }
+.win>*{position:relative}
 .win h3{margin:0 0 .5rem;font-size:1.02rem;font-weight:600;letter-spacing:-.01em}
 .win p{margin:0;color:var(--dim);font-size:.93rem;line-height:1.6}
 
@@ -371,6 +386,45 @@ footer{
   padding:.15em .4em;border-radius:3px;border:1px solid var(--line);
 }
 .note[open]>summary .note__name{color:var(--accent)}
+
+/* ─── metrics band ───────────────────────────────────────── */
+.metrics{border-bottom:1px solid var(--line-soft);background:var(--surface)}
+.metrics__grid{display:grid;grid-template-columns:repeat(4,1fr);max-width:var(--maxw);margin-inline:auto}
+.stat{
+  padding:clamp(1.6rem,4vw,2.6rem) clamp(1rem,3vw,2.2rem);
+  border-right:1px solid var(--line-soft);
+}
+.stat:last-child{border-right:0}
+.stat__num{
+  font:700 clamp(2.1rem,5.5vw,3.4rem)/1 var(--sans);
+  letter-spacing:-.035em;color:var(--text);
+  font-variant-numeric:tabular-nums;display:flex;align-items:baseline;
+}
+.stat__num sup{font-size:.5em;color:var(--accent);font-weight:600;top:-.05em;margin-left:.05em}
+.stat__label{margin-top:.7rem;font:500 .72rem/1.5 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+@media (max-width:640px){
+  .metrics__grid{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--line-soft)}
+}
+
+/* ─── capability ticker ──────────────────────────────────── */
+.ticker{
+  overflow:hidden;background:var(--ink);
+  border-bottom:1px solid var(--line-soft);
+  padding:.95rem 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.ticker__row{display:flex;width:max-content;animation:tick 34s linear infinite}
+.ticker:hover .ticker__row{animation-play-state:paused}
+.ticker span{
+  display:inline-flex;align-items:center;
+  font:500 .78rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);white-space:nowrap;padding:0 1.5rem;
+}
+.ticker span::before{content:"";width:5px;height:5px;background:var(--accent-dim);transform:rotate(45deg);margin-right:1.5rem}
+@keyframes tick{to{transform:translateX(-50%)}}
 
 /* ─── walkthroughs ───────────────────────────────────────── */
 .walks{display:flex;flex-direction:column;gap:.9rem}
@@ -474,6 +528,7 @@ footer{
 <main id="main">
 
   <header class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
     <div class="wrap">
       <p class="tag"><i aria-hidden="true"></i>Available for offensive security work</p>
       <h1><span class="l1" id="n1">Bharadwaj</span><span class="l2" id="n2">Kasturi</span></h1>
@@ -504,6 +559,22 @@ footer{
       </div>
     </div>
   </header>
+
+  <section class="metrics" aria-label="At a glance">
+    <div class="metrics__grid">
+      <div class="stat"><div class="stat__num" data-count="1" data-suffix="+">0</div><div class="stat__label">Years in offensive security</div></div>
+      <div class="stat"><div class="stat__num" data-count="3">0</div><div class="stat__label">Industry certifications</div></div>
+      <div class="stat"><div class="stat__num" data-count="7">0</div><div class="stat__label">Assessment surfaces</div></div>
+      <div class="stat"><div class="stat__num" data-count="12">0</div><div class="stat__label">Vulnerability classes documented</div></div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__row">
+      <span>Web App Pentest</span><span>API Security</span><span>Android</span><span>iOS</span><span>Network Pentest</span><span>Cloud (AWS)</span><span>Thick Client</span><span>LLM Pentest</span><span>Red Teaming</span><span>Burp Suite</span><span>Frida</span><span>Cobalt Strike</span><span>Nmap</span><span>Metasploit</span><span>OWASP Top 10</span><span>MITRE ATT&amp;CK</span>
+      <span>Web App Pentest</span><span>API Security</span><span>Android</span><span>iOS</span><span>Network Pentest</span><span>Cloud (AWS)</span><span>Thick Client</span><span>LLM Pentest</span><span>Red Teaming</span><span>Burp Suite</span><span>Frida</span><span>Cobalt Strike</span><span>Nmap</span><span>Metasploit</span><span>OWASP Top 10</span><span>MITRE ATT&amp;CK</span>
+    </div>
+  </div>
 
   <section class="sec" id="about">
     <div class="wrap sec__grid">
@@ -1206,6 +1277,61 @@ filename="<mark>note.png</mark>"   Content-Type: <mark>image/png</mark>
       });
     }, {rootMargin:"0px 0px -8% 0px", threshold:0.06});
     items.forEach(function(el){ io.observe(el); });
+  }
+
+  /* count-up metrics */
+  var nums = document.querySelectorAll(".stat__num");
+  function runCount(el){
+    var target = parseInt(el.dataset.count, 10) || 0;
+    var suffix = el.dataset.suffix || "";
+    if (reduce){ el.innerHTML = target + (suffix ? "<sup>" + suffix + "</sup>" : ""); return; }
+    var dur = 1100, start = null;
+    function tick(t){
+      if (start === null) start = t;
+      var p = Math.min((t - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      if (p < 1){ el.textContent = Math.floor(eased * target); requestAnimationFrame(tick); }
+      else { el.innerHTML = target + (suffix ? "<sup>" + suffix + "</sup>" : ""); }
+    }
+    requestAnimationFrame(tick);
+  }
+  if ("IntersectionObserver" in window && nums.length){
+    var no = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ runCount(e.target); no.unobserve(e.target); } });
+    }, {threshold:0.5});
+    nums.forEach(function(n){ no.observe(n); });
+  } else {
+    nums.forEach(runCount);
+  }
+
+  /* pointer-follow glow: hero + cards */
+  var hero = document.querySelector(".hero");
+  if (hero){
+    hero.addEventListener("pointermove", function(e){
+      var r = hero.getBoundingClientRect();
+      hero.style.setProperty("--hx", (e.clientX - r.left) + "px");
+      hero.style.setProperty("--hy", (e.clientY - r.top) + "px");
+    });
+  }
+  document.querySelectorAll(".card, .win").forEach(function(c){
+    c.addEventListener("pointermove", function(e){
+      var r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      c.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+
+  /* magnetic buttons */
+  if (!reduce && window.matchMedia("(pointer:fine)").matches){
+    document.querySelectorAll(".btn").forEach(function(b){
+      b.addEventListener("pointermove", function(e){
+        var r = b.getBoundingClientRect();
+        var x = e.clientX - r.left - r.width / 2;
+        var y = e.clientY - r.top - r.height / 2;
+        b.style.transform = "translate(" + (x * 0.18).toFixed(1) + "px," + (y * 0.28).toFixed(1) + "px)";
+      });
+      b.addEventListener("pointerleave", function(){ b.style.transform = ""; });
+    });
   }
 
   /* current section in status bar */
