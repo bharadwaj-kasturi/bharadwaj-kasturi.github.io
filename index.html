@@ -463,27 +463,49 @@ footer{
 .step2 p code,.walk__scene code{font:.85em/1 var(--mono);background:var(--surface-2);color:var(--text);padding:.14em .38em;border-radius:3px;border:1px solid var(--line)}
 
 /* mock browser / request panels — all synthetic */
-.mock{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--ink);margin:.85rem 0 0}
-.mock__bar{display:flex;align-items:center;gap:.4rem;padding:.5rem .65rem;background:var(--surface-2);border-bottom:1px solid var(--line)}
-.mock__dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
-.mock__url{margin-left:.35rem;font:.71rem/1 var(--mono);color:var(--dim);background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:.4rem .75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.mock{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--ink);margin:.85rem 0 0;box-shadow:0 12px 34px -20px rgba(0,0,0,.7)}
+.mock__bar{display:flex;align-items:center;gap:.45rem;padding:.65rem .8rem;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.mock__dot{width:10px;height:10px;border-radius:50%;background:var(--line);flex:none}
+.mock__url{margin-left:.4rem;font:.79rem/1 var(--mono);color:var(--dim);background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:.5rem .95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .mock__url b{color:var(--accent);font-weight:500}
-.mock__view{padding:1rem 1.05rem}
-.mock__code{margin:0;padding:.9rem 1.05rem;overflow-x:auto;font:.77rem/1.7 var(--mono);color:var(--dim);white-space:pre}
+.mock__view{padding:1.35rem 1.45rem}
+.mock__code{margin:0;padding:1.2rem 1.4rem;overflow-x:auto;font:.86rem/1.8 var(--mono);color:var(--dim);white-space:pre}
 .mock__code mark{background:var(--accent-wash);color:var(--accent);font-weight:500;padding:.05em .25em;border-radius:2px}
 .mock__code .c{color:var(--faint)}
 .mock__code .g{color:#7fb888}
-.mock__cap{padding:.5rem .8rem;font:.65rem/1.4 var(--mono);color:var(--faint);background:var(--surface);border-top:1px solid var(--line-soft);letter-spacing:.03em}
+.mock__cap{padding:.65rem 1rem;font:.72rem/1.4 var(--mono);color:var(--faint);background:var(--surface);border-top:1px solid var(--line-soft);letter-spacing:.03em}
 .mock__cap::before{content:"▚ ";color:var(--accent-dim)}
 
-.ui{display:flex;flex-direction:column;gap:.45rem}
-.ui-row{display:flex;justify-content:space-between;gap:1rem;padding:.5rem .7rem;background:var(--surface);border:1px solid var(--line-soft);border-radius:4px}
-.ui-row span{color:var(--faint);font:.68rem/1.5 var(--mono);text-transform:uppercase;letter-spacing:.05em}
-.ui-row b{color:var(--text);font-weight:500;font-size:.86rem}
+.ui{display:flex;flex-direction:column;gap:.6rem}
+.ui-row{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 1.05rem;background:var(--surface);border:1px solid var(--line-soft);border-radius:5px}
+.ui-row span{color:var(--faint);font:.72rem/1.5 var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.ui-row b{color:var(--text);font-weight:500;font-size:.94rem}
 .ui-row.hit{border-color:var(--accent-dim);background:var(--accent-wash)}
 .ui-row.hit b{color:var(--accent)}
-.walk__fix{margin:1.6rem 0 0;padding:.85rem 1rem;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:5px;font:.86rem/1.6 var(--mono);color:var(--dim)}
+.walk__fix{max-width:82ch;margin:1.6rem 0 0;padding:.95rem 1.15rem;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:6px;font:.88rem/1.65 var(--mono);color:var(--dim)}
 .walk__fix b{color:var(--accent);font-weight:500}
+
+/* full-width section header (used by walkthroughs) */
+.sec__head{max-width:72ch;margin-bottom:2.75rem}
+.sec__head::before{content:"";display:block;width:28px;height:2px;background:var(--accent);margin-bottom:1.1rem}
+.sec__head h2{margin:0;font:600 .8rem/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
+.sec__head p{margin:.85rem 0 0;font-family:var(--serif);font-size:clamp(1.15rem,2.4vw,1.5rem);line-height:1.5;color:var(--dim)}
+.sec__head p code{font:.82em/1 var(--mono);background:var(--surface-2);color:var(--accent);padding:.14em .4em;border-radius:4px;border:1px solid var(--line)}
+
+/* walkthrough scene text stays readable even at full width */
+.walk__scene{max-width:74ch}
+
+/* desktop: narrative left, mockup right — the PoC box fills real space */
+@media (min-width:920px){
+  .step2__c{
+    display:grid;
+    grid-template-columns:minmax(0,32ch) minmax(0,1fr);
+    column-gap:clamp(2rem,4vw,3.5rem);row-gap:.55rem;align-items:start;
+  }
+  .step2__c h4{grid-column:1;grid-row:1;margin-top:.35rem}
+  .step2__c p{grid-column:1;grid-row:2}
+  .step2__c .mock{grid-column:2;grid-row:1 / span 2;margin-top:0;align-self:center;width:100%}
+}
 
 /* ─── reveal ─────────────────────────────────────────────── */
 .rv{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
@@ -854,12 +876,13 @@ footer{
     </div>
   </section>
 
-  <section class="sec" id="walkthroughs">
-    <div class="wrap sec__grid">
-      <div class="sec__label rv"><h2>Walkthroughs</h2><p>Step-by-step,<br>illustrated on a<br>synthetic app</p></div>
-      <div>
-        <p class="prose rv" style="margin-bottom:1.5rem">Detailed reproduction flow for a handful of the classes above, illustrated on <b style="color:var(--text)">a demo application I built for teaching — <code>demo.shopline.test</code></b>. Every screen, URL, name, and value shown is invented for illustration.</p>
-        <p class="prose rv" style="margin:0 0 2rem;font-size:.9rem;color:var(--faint)">No client, no real system, no engagement data appears here. The mockups are hand-drawn UI, not screenshots — nothing to blur, because nothing is real.</p>
+  <section class="sec sec--wide" id="walkthroughs">
+    <div class="wrap">
+      <div class="sec__head rv">
+        <h2>Walkthroughs</h2>
+        <p>Step-by-step reproduction, illustrated on a demo app I built for teaching — <code>demo.shopline.test</code>. Every screen, URL, name and value is invented.</p>
+      </div>
+      <p class="prose rv" style="max-width:68ch;margin:0 0 2.5rem;font-size:.92rem;color:var(--faint)">No client, no real system, no engagement data appears here. The mockups are hand-drawn UI, not screenshots — nothing to blur, because nothing is real.</p>
 
         <div class="walks rv">
 
@@ -1102,7 +1125,6 @@ filename="<mark>note.png</mark>"   Content-Type: <mark>image/png</mark>
           </details>
 
         </div>
-      </div>
     </div>
   </section>
 
