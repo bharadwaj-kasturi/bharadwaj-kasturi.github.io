@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chinnu75.github.io/sitemap.xml
+Sitemap: https://bharadwaj-kasturi.github.io/sitemap.xml
