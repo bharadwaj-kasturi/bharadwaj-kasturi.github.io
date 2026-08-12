@@ -139,13 +139,7 @@ a{color:inherit}
   -webkit-mask-image:radial-gradient(120% 80% at 78% 8%,#000 0%,transparent 68%);
   opacity:.7;
 }
-.hero>*{position:relative;z-index:1}
-.hero__glow{
-  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;
-  transition:opacity .45s ease;
-  background:radial-gradient(360px circle at var(--hx,72%) var(--hy,18%),var(--accent-wash),transparent 68%);
-}
-.hero:hover .hero__glow{opacity:1}
+.hero>*{position:relative}
 
 .tag{
   display:inline-flex;align-items:center;gap:.55rem;
@@ -275,7 +269,7 @@ a{color:inherit}
 /* ─── cards ──────────────────────────────────────────────── */
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.35rem}
 .card{
-  position:relative;overflow:hidden;--mx:50%;--my:50%;
+  position:relative;
   border:1px solid var(--line);background:var(--surface);
   padding:1.6rem 1.65rem;border-radius:6px;
   display:flex;flex-direction:column;gap:.7rem;
@@ -289,12 +283,6 @@ a{color:inherit}
 }
 .card__verify svg{width:12px;height:12px;flex:none}
 a.card:hover .card__verify{opacity:1;gap:.62rem}
-.card::after,.win::after{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;
-  background:radial-gradient(220px circle at var(--mx) var(--my),rgba(240,162,39,.10),transparent 60%);
-}
-.card:hover::after,.win:hover::after{opacity:1}
-.card>*{position:relative}
 .card:hover{border-color:var(--accent-dim);background:var(--surface-2);transform:translateY(-3px)}
 .card__code{
   font:500 1.05rem/1 var(--mono);letter-spacing:.02em;color:var(--accent);
@@ -308,11 +296,12 @@ a.card:hover .card__verify{opacity:1;gap:.62rem}
 /* ─── highlights ─────────────────────────────────────────── */
 .wins{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
 .win{
-  position:relative;overflow:hidden;--mx:50%;--my:50%;
+  position:relative;
   border:1px solid var(--line);border-left:2px solid var(--accent);
   background:var(--surface);padding:1.35rem 1.5rem;border-radius:0 4px 4px 0;
+  transition:border-color .2s,transform .2s,background .2s;
 }
-.win>*{position:relative}
+.win:hover{border-color:var(--accent-dim);transform:translateY(-2px)}
 .win h3{margin:0 0 .5rem;font-size:1.02rem;font-weight:600;letter-spacing:-.01em}
 .win p{margin:0;color:var(--dim);font-size:.93rem;line-height:1.6}
 
@@ -415,24 +404,6 @@ footer{
   .stat:nth-child(2n){border-right:0}
   .stat:nth-child(-n+2){border-bottom:1px solid var(--line-soft)}
 }
-
-/* ─── capability ticker ──────────────────────────────────── */
-.ticker{
-  overflow:hidden;background:var(--ink);
-  border-bottom:1px solid var(--line-soft);
-  padding:.95rem 0;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-}
-.ticker__row{display:flex;width:max-content;animation:tick 34s linear infinite}
-.ticker:hover .ticker__row{animation-play-state:paused}
-.ticker span{
-  display:inline-flex;align-items:center;
-  font:500 .78rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
-  color:var(--dim);white-space:nowrap;padding:0 1.5rem;
-}
-.ticker span::before{content:"";width:5px;height:5px;background:var(--accent-dim);transform:rotate(45deg);margin-right:1.5rem}
-@keyframes tick{to{transform:translateX(-50%)}}
 
 /* ─── walkthroughs ───────────────────────────────────────── */
 .walks{display:flex;flex-direction:column;gap:1.15rem}
@@ -558,7 +529,6 @@ footer{
 <main id="main">
 
   <header class="hero">
-    <div class="hero__glow" aria-hidden="true"></div>
     <div class="wrap">
       <p class="tag"><i aria-hidden="true"></i>Available for offensive security work</p>
       <h1><span class="l1" id="n1">Bharadwaj</span><span class="l2" id="n2">Kasturi</span></h1>
@@ -598,13 +568,6 @@ footer{
       <div class="stat"><div class="stat__num" data-count="12">0</div><div class="stat__label">Vulnerability classes documented</div></div>
     </div>
   </section>
-
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__row">
-      <span>Web App Pentest</span><span>API Security</span><span>Android</span><span>iOS</span><span>Network Pentest</span><span>Cloud (AWS)</span><span>Thick Client</span><span>LLM Pentest</span><span>Red Teaming</span><span>Burp Suite</span><span>Frida</span><span>Cobalt Strike</span><span>Nmap</span><span>Metasploit</span><span>OWASP Top 10</span><span>MITRE ATT&amp;CK</span>
-      <span>Web App Pentest</span><span>API Security</span><span>Android</span><span>iOS</span><span>Network Pentest</span><span>Cloud (AWS)</span><span>Thick Client</span><span>LLM Pentest</span><span>Red Teaming</span><span>Burp Suite</span><span>Frida</span><span>Cobalt Strike</span><span>Nmap</span><span>Metasploit</span><span>OWASP Top 10</span><span>MITRE ATT&amp;CK</span>
-    </div>
-  </div>
 
   <section class="sec" id="about">
     <div class="wrap sec__grid">
@@ -1337,36 +1300,6 @@ filename="<mark>note.png</mark>"   Content-Type: <mark>image/png</mark>
     nums.forEach(runCount);
   }
 
-  /* pointer-follow glow: hero + cards */
-  var hero = document.querySelector(".hero");
-  if (hero){
-    hero.addEventListener("pointermove", function(e){
-      var r = hero.getBoundingClientRect();
-      hero.style.setProperty("--hx", (e.clientX - r.left) + "px");
-      hero.style.setProperty("--hy", (e.clientY - r.top) + "px");
-    });
-  }
-  document.querySelectorAll(".card, .win").forEach(function(c){
-    c.addEventListener("pointermove", function(e){
-      var r = c.getBoundingClientRect();
-      c.style.setProperty("--mx", (e.clientX - r.left) + "px");
-      c.style.setProperty("--my", (e.clientY - r.top) + "px");
-    });
-  });
-
-  /* magnetic buttons */
-  if (!reduce && window.matchMedia("(pointer:fine)").matches){
-    document.querySelectorAll(".btn").forEach(function(b){
-      b.addEventListener("pointermove", function(e){
-        var r = b.getBoundingClientRect();
-        var x = e.clientX - r.left - r.width / 2;
-        var y = e.clientY - r.top - r.height / 2;
-        b.style.transform = "translate(" + (x * 0.18).toFixed(1) + "px," + (y * 0.28).toFixed(1) + "px)";
-      });
-      b.addEventListener("pointerleave", function(){ b.style.transform = ""; });
-    });
-  }
-
   /* current section in status bar */
   var navLinks = Array.prototype.slice.call(document.querySelectorAll(".bar__nav a"));
   var targets = navLinks.map(function(a){ return document.querySelector(a.getAttribute("href")); }).filter(Boolean);
@@ -1380,26 +1313,6 @@ filename="<mark>note.png</mark>"   Content-Type: <mark>image/png</mark>
       });
     }, {rootMargin:"-45% 0px -50% 0px"});
     targets.forEach(function(t){ so.observe(t); });
-  }
-
-  /* name decode on load — one moment, then it stays put */
-  if (!reduce) {
-    var GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%$&/\\<>*";
-    ["n1","n2"].forEach(function(id, idx){
-      var el = document.getElementById(id);
-      if (!el) return;
-      var real = el.textContent, frame = 0, total = 22 + idx * 8;
-      var timer = setInterval(function(){
-        frame++;
-        var shown = Math.floor((frame / total) * real.length);
-        var out = "";
-        for (var i = 0; i < real.length; i++) {
-          out += i < shown ? real[i] : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-        }
-        el.textContent = out;
-        if (frame >= total) { clearInterval(timer); el.textContent = real; }
-      }, 34);
-    });
   }
 })();
 </script>
