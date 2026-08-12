@@ -279,8 +279,16 @@ a{color:inherit}
   border:1px solid var(--line);background:var(--surface);
   padding:1.6rem 1.65rem;border-radius:6px;
   display:flex;flex-direction:column;gap:.7rem;
+  text-decoration:none;color:inherit;
   transition:border-color .2s,transform .2s,background .2s;
 }
+.card__verify{
+  margin-top:.35rem;display:inline-flex;align-items:center;gap:.4rem;
+  font:500 .72rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);opacity:.75;transition:opacity .2s,gap .2s;
+}
+.card__verify svg{width:12px;height:12px;flex:none}
+a.card:hover .card__verify{opacity:1;gap:.62rem}
 .card::after,.win::after{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;
   background:radial-gradient(220px circle at var(--mx) var(--my),rgba(240,162,39,.10),transparent 60%);
@@ -1174,23 +1182,26 @@ filename="<mark>note.png</mark>"   Content-Type: <mark>image/png</mark>
     <div class="wrap sec__grid">
       <div class="sec__label rv"><h2>Certifications</h2><p>Hands-on,<br>exam-verified</p></div>
       <div class="cards">
-        <article class="card rv">
+        <a class="card rv" href="https://certs.ine.com/cdabe7f7-bb72-48ba-a385-bf2210c1a12f#acc.YUr3jhCd" target="_blank" rel="noopener">
           <span class="card__code">eJPT</span>
           <h3 class="card__name">eLearnSecurity Junior Penetration Tester</h3>
           <span class="card__issuer">INE</span>
-        </article>
-        <article class="card rv">
+          <span class="card__verify">Verify credential <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="card rv" href="https://labs.cyberwarfare.live/credential/achievement/691f0fee4ae6483961663aa9" target="_blank" rel="noopener">
           <span class="card__code">CRTA</span>
           <h3 class="card__name">Certified Red Team Analyst</h3>
           <span class="card__issuer">CyberWarFare Labs</span>
           <p class="card__note">Practical proficiency in red team operations, adversary simulation, and attack chain execution.</p>
-        </article>
-        <article class="card rv">
+          <span class="card__verify">Verify credential <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="card rv" href="https://certs.ine.com/a2087fe7-2f02-4b5a-918e-c781537a6310#acc.HGvJgZ3k" target="_blank" rel="noopener">
           <span class="card__code">eWPTX</span>
           <h3 class="card__name">Web Application Penetration Tester eXtreme</h3>
           <span class="card__issuer">INE</span>
           <p class="card__note">Advanced proficiency in web application penetration testing, exploitation, and manual vulnerability chaining.</p>
-        </article>
+          <span class="card__verify">Verify credential <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
       </div>
     </div>
   </section>
